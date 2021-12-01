@@ -8,3 +8,6 @@ echo "deb https://packages.grafana.com/enterprise/deb stable main" | tee -a /etc
 
 apt update
 apt install -y grafana-enterprise
+
+systemctl daemon-reload
+systemctl enable --now grafana-server

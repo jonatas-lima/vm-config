@@ -8,7 +8,7 @@ wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_5.0-1+focal_all.deb
 apt update
 
-apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
+apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
 
 mysql -u root -e "create database zabbix character set utf8 collate utf8_bin; create user 'zabbix'@'%' identified by '$ZABBIX_MYSQL_PASSWORD'; grant all privileges on zabbix.* to 'zabbix'@'%'; flush privileges; quit;"
 

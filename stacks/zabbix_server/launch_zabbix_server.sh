@@ -1,5 +1,6 @@
 #!/bin/bash
 
+MYSQL_ROOT_PASSWORD=root
 ZABBIX_MYSQL_PASSWORD=zabbix
 
 cd /tmp
@@ -10,7 +11,13 @@ apt update
 
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
 
-mysql -u root -e "create database zabbix character set utf8 collate utf8_bin; create user 'zabbix'@'%' identified by '$ZABBIX_MYSQL_PASSWORD'; grant all privileges on zabbix.* to 'zabbix'@'%'; flush privileges; quit;"
+mysql -e "UPDATE mysql.user SET Password = PASSWORD('$MYSQL_ROOT_PASSWORD') WHERE User = 'root'"
+mysql -e "DROP USER ''@'localhost'"
+mysql -e "DROP USER ''@'$(hostname)'"
+mysql -e "DROP DATABASE test"
+mysql -e "FLUSH PRIVILEGES"
+
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin; CREATE USER 'zabbix'@'%' IDENTIFIED BY '$ZABBIX_MYSQL_PASSWORD'; GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'%'; FLUSH PRIVILEGES;"
 
 zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 

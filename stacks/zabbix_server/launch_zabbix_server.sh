@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# esse script ainda não funciona!
 MYSQL_ROOT_PASSWORD=root
 ZABBIX_MYSQL_PASSWORD=zabbix
 

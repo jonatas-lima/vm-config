@@ -14,7 +14,7 @@ mysql -u root -e "create database zabbix character set utf8 collate utf8_bin; cr
 
 zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 
-sed -i "s/DBPassword=$ZABBIX_MYSQL_PASSWORD"
+sed -i "s/DBPassword=/DBPassword=$ZABBIX_MYSQL_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 sed -i 's/# php_value date.timezone Europe/Riga/php_value date.timezone America/Recife/g' /etc/zabbix/apache.conf
 
 systemctl restart zabbix-server zabbix-agent apache2

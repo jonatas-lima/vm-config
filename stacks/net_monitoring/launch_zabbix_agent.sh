@@ -18,3 +18,6 @@ sudo sed -i "s/ServerActive=127.0.0.1/ServerActive=$ZABBIX_SERVER_IP/g" /etc/zab
 # Reiniciando o zabbix-agent
 sudo systemctl restart zabbix-agent
 sudo systemctl enable zabbix-agent
+
+# Cria um crontab que irá realizar o teste de RTT por 5 minutos a cada 10 minutos
+echo "*/10 * * * * bash /home/vagrant/vm-config/scripts/get_rtt.sh 300" > /var/spool/cron/crontabs/root

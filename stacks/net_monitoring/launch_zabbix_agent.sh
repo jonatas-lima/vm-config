@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ZABBIX_SERVER_IP=192.168.1.10
+ZABBIX_SERVER_IP=$1
 
 # Adicionando o repositorio do zabbix
 cd /tmp

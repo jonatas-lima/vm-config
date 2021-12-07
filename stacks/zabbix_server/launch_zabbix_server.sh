@@ -20,7 +20,7 @@ docker run -d --name mysql \
   -e MYSQL_DATABASE=zabbix \
   -e MYSQL_USER=zabbix \
   -e MYSQL_PASSWORD=$ZABBIX_MYSQL_PASSWORD \
-  --network host
+  --network host \
   mysql:5.7
 
 zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | docker exec mysql mysql -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix

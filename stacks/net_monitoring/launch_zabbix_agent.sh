@@ -9,7 +9,9 @@ wget -c 'https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/za
 sudo dpkg -i ./zabbix-release_5.0-1+focal_all.deb
 
 # Instalando o zabbix-agent
-sudo apt update && sudo apt install -y zabbix-agent
+sudo apt update && sudo apt install -y zabbix-agent iperf3
+
+iperf3 -s -D
 
 # Configurando o IP do servidor zabbix
 sudo sed -i "s/Server=127.0.0.1/Server=$ZABBIX_SERVER_IP/g" /etc/zabbix/zabbix_agentd.conf

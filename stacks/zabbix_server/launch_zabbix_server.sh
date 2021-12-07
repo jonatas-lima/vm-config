@@ -12,13 +12,18 @@ apt update
 
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
 
-bash './mysql_secure_installation.sh' $MYSQL_ROOT_PASSWORD
+curl -fsSL https://get.docker.com -o get-docker.sh
+bash get-docker.sh
 
-mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin"
-mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '$ZABBIX_MYSQL_PASSWORD'"
-mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON zabbix.* to 'zabbix'@'%'"
+docker run -d --name mysql \
+  -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
+  -e MYSQL_DATABASE=zabbix \
+  -e MYSQL_USER=zabbix \
+  -e MYSQL_PASSWORD=$ZABBIX_MYSQL_PASSWORD \
+  --network host
+  mysql:5.7
 
-zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
+zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | docker exec mysql mysql -uzabbix -p$ZABBIX_MYSQL_PASSWORD zabbix
 
 sed -i "s/DBPassword=/DBPassword=$ZABBIX_MYSQL_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 sed -i 's/# php_value date.timezone Europe/Riga/php_value date.timezone America/Recife/g' /etc/zabbix/apache.conf
